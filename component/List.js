@@ -6,26 +6,24 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignContent:'center',
+        alignItems:'center',
     },
 
-    item: {
-      backgroundColor: '#f9c2ff',
-      padding: 20,
-      marginVertical: 8,
-      marginHorizontal: 16,
+    text: {
+        textAlignVertical: 'center',
     },
 
     pressable: {
-        width: 140,
+        width: 200,
         paddingVertical: 10,
-        paddingHorizontal: 10,
-        marginTop: 50,
-        marginLeft: 50,
-        marginBottom: 50,
+        paddingHorizontal: 20,
+        marginTop: 5,
+        marginBottom: 5,
         border: 2,
         borderRadius: '20px',
         backgroundColor: 'teal',
     }
+
   })
 
 const List = () => {
@@ -41,9 +39,11 @@ const List = () => {
 
     const renderItem = ({ item }) => (
         <View>
-            <Text>{item.name} </Text>
-            <Text>{item.capital}</Text>
-            <Text>{item.region}</Text>
+            <Pressable onPress={handleDisplay} style={styles.pressable}>
+            <Text style={styles.text}>name={item.name}</Text>
+            <Text style={styles.text}>capital={item.capital}</Text>
+            <Text style={styles.text}>region={item.region}</Text>
+            </Pressable>
         </View> 
     )
 
@@ -53,17 +53,24 @@ const List = () => {
 
     return (
         <View>
-            <Pressable onPress={handleDisplay} style={styles.pressable}>
-                Display countries
-            </Pressable>
             <View style={styles.container}>
-            { !isModalVisible ? <ActivityIndicator style={styles.indicator} size="large" /> :
-                    <FlatList
+            { !countries ? <ActivityIndicator size="large" /> :
+                <FlatList
                     data={countries}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
-                    /> 
-            } 
+                /> 
+            }
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setIsModalVisible(!isModalVisible);
+                    }}
+                >
+                </Modal>
             </View>
         </View>
     )
